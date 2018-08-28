@@ -24,23 +24,40 @@ app.get('/api/v1/rewards', (req, res, next) => {
 		}
 		res.json(items.map(reward => {
 			return {
-				name: reward.name,
-				email: reward.email
+				email: reward.email,
+				platform: reward.platform,
+				username: reward.username,
+				termsAccepted: reward.termsAccepted
 			};
 		}));
 	}).catch(err => next(err));
 });
 
+app.get('/api/v1/rewards/csv', (req, res, next) => {
+	//res.set('Content-Type', 'text/csv');
+	RewardController.getCsv().then(items => {
+		if(!items){
+			return res.status(404).send('error, csv not found');
+		}
+		res.send(items);
+	});
+});
+
 app.post('/api/v1/rewards/create', (req, res, next) => {
 	res.set('Content-Type', 'text/json');
-	const {name, email} = req.body;
-	if(!name || !email) return res.status(500).send('missing an input');
+	const {platform, username, email, termsAccepted} = req.body;
+	if(!platform ||!username || !email) return res.status(500).send('missing an input');
+	if(!termsAccepted) return res.status(500).send('terms must be accepted'); // not sure about the error code
 	RewardController.addReward({
-		name: name,
-		email: email
+		email: email,
+		platform: platform,
+		username: username,
+		termsAccepted: termsAccepted
 	}).then(reward => res.json({
-		name: reward.name,
-		email: reward.email
+		email: reward.email,
+		platform: reward.platform,
+		username: reward.username,
+		termsAccepted: reward.termsAccepted
 	}))
 	.catch(err => next(err));
 });

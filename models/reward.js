@@ -9,8 +9,10 @@ const conn = mongoose.connection;
 conn.on('error', console.error.bind(console, 'connection error;'));
 
 const rewardSchema = mongoose.Schema({
-	name: {type: String, required: true},
-	email: String
+	email: String,
+	platform: {type: String, required: true},
+	username: {type: String, required: true},
+	termsAccepted: Boolean
 });
 
 module.exports = mongoose.model('Reward', rewardSchema);
