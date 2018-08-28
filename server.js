@@ -33,16 +33,6 @@ app.get('/api/v1/rewards', (req, res, next) => {
 	}).catch(err => next(err));
 });
 
-app.get('/api/v1/rewards/csv', (req, res, next) => {
-	//res.set('Content-Type', 'text/csv');
-	RewardController.getCsv().then(items => {
-		if(!items){
-			return res.status(404).send('error, csv not found');
-		}
-		res.send(items);
-	});
-});
-
 app.post('/api/v1/rewards/create', (req, res, next) => {
 	res.set('Content-Type', 'text/json');
 	const {platform, username, email, termsAccepted} = req.body;
