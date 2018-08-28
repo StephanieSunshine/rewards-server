@@ -53,4 +53,4 @@ app.post('/api/v1/rewards/create', (req, res, next) => {
 });
 
 
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 4001);
